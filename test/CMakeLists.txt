@@ -24,4 +24,3 @@ if (NOT GTEST_FOUND)
 endif ()
 
 include_directories(${GTEST_INCLUDE_DIRS})
-
