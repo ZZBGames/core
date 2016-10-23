@@ -18,9 +18,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+set(MODULE_NAME unittest)
+
+set(MODULE_SOURCES
+    util/DimensionTest.cpp
+    util/InsetsTest.cpp
+    tiles/TilesetTest.cpp
+)
+
 find_package(GTest REQUIRED)
 if (NOT GTEST_FOUND)
     message(FATAL_ERROR "Google Test is needed to build the tests.")
 endif ()
 
 include_directories(${GTEST_INCLUDE_DIRS})
+
+add_executable(${MODULE_NAME} ${MODULE_SOURCES})
+target_link_libraries(${MODULE_NAME} ${SFML_LIBRARIES} ${GTEST_BOTH_LIBRARIES} zzb-util zzb-tiles)
+
+add_custom_target(tests ${MODULE_NAME} DEPENDS ${MODULE_NAME} COMMENT "Running unit tests...")
+
+file(COPY res DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

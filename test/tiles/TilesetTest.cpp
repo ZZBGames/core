@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <ios>
+#include <gtest/gtest.h>
 
 #include <zzbgames/tiles/Tileset.hpp>
 
@@ -26,40 +26,15 @@ namespace zzbgames {
 
 namespace tiles {
 
-Tileset::Tileset(const std::string &filename, const util::Dimension &tileSize, const util::Insets &margin,
-                 const util::Insets &spacing)
-    : m_gridSize(0, 0),
-      m_image(),
-      m_margin(margin),
-      m_spacing(spacing),
-      m_texture(),
-      m_tileSize(tileSize)
-{
-    if (!m_image.loadFromFile(filename))
-        throw std::ios_base::failure("Failed to load texture from " + filename);
+TEST(TilesetTest, Constructor) {
+    util::Dimension tileSize(8, 8);
+    util::Insets margin(1, 1, 0, 0);
+    util::Insets spacing(0, 0, 1, 1);
 
-    if (!m_texture.loadFromImage(m_image))
-        throw std::ios_base::failure("Failed to load texture from " + filename);
+    ASSERT_THROW(Tileset("undefined", tileSize, margin, spacing), std::ios::failure);
 
-    computeGridSize();
-}
-
-Tileset::~Tileset()
-{}
-
-void Tileset::computeGridSize()
-{
-    unsigned long tileWidth = m_spacing.left() + m_tileSize.width() + m_spacing.right();
-    unsigned long tileHeight = m_spacing.top() + m_tileSize.height() + m_spacing.bottom();
-
-    util::Dimension textureSize(m_texture.getSize());
-
-    m_gridSize.width((textureSize.width() - m_margin.left() - m_margin.right()) / tileWidth);
-    m_gridSize.height((textureSize.height() - m_margin.top() - m_margin.bottom()) / tileHeight);
-}
-
-unsigned long Tileset::tileCount() const {
-    return m_gridSize.height() * m_gridSize.width();
+    Tileset tileset("res/tiles/tileset.png", tileSize, margin, spacing);
+    ASSERT_EQ(4, tileset.tileCount());
 }
 
 }

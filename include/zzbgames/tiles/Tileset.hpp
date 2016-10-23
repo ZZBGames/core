@@ -53,6 +53,13 @@ public:
 
     ~Tileset();
 
+    /**
+     * ]brief Returns the number of tiles of this tileset.
+     *
+     * @return The number of tiles of this tileset.
+     */
+    unsigned long tileCount() const;
+
 private:
     /**
      * @brief Computes and initializes the grid size.

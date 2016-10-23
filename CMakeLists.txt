@@ -33,7 +33,7 @@ set(BUILD_STATIC_LIBS TRUE CACHE BOOL "Build static libraries.")
 set(BUILD_DOC TRUE CACHE BOOL "Generate documentation.")
 set(BUILD_TESTS TRUE CACHE BOOL "Build tests.")
 
-find_package(SFML 2 REQUIRED)
+find_package(SFML 2 REQUIRED graphics)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -std=c++11")
 if (NOT CMAKE_BUILD_TYPE)
