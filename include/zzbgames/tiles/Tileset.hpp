@@ -54,7 +54,7 @@ public:
     ~Tileset();
 
     /**
-     * ]brief Returns the number of tiles of this tileset.
+     * @brief Returns the number of tiles of this tileset.
      *
      * @return The number of tiles of this tileset.
      */
@@ -67,7 +67,7 @@ private:
     void computeGridSize();
 
 private:
-    /// \brief The size of this tileset in squares.
+    /// @brief The size of this tileset in squares.
     util::Dimension m_gridSize;
 
     /// @brief The image used by this tileset.
