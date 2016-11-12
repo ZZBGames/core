@@ -29,13 +29,12 @@ set(MODULE_SOURCES
 find_package(GTest REQUIRED)
 if (NOT GTEST_FOUND)
     message(FATAL_ERROR "Google Test is needed to build the tests.")
-endif ()
+endif()
 
 include_directories(${GTEST_INCLUDE_DIRS})
 
 add_executable(${MODULE_NAME} ${MODULE_SOURCES})
 target_link_libraries(${MODULE_NAME} zzb-util zzb-tiles ${SFML_LIBRARIES} ${GTEST_BOTH_LIBRARIES})
 
-add_custom_target(tests ${MODULE_NAME} DEPENDS ${MODULE_NAME} COMMENT "Running unit tests...")
-
-file(COPY res DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+add_custom_target(pre-tests COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/res ${CMAKE_CURRENT_BINARY_DIR}/res)
+add_custom_target(tests ${MODULE_NAME} DEPENDS pre-tests ${MODULE_NAME} COMMENT "Running unit tests...")

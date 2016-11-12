@@ -21,7 +21,7 @@
 find_package(Doxygen REQUIRED)
 if (NOT DOXYGEN_FOUND)
     message(FATAL_ERROR "Doxygen is needed to build the documentation.")
-endif ()
+endif()
 
 configure_file(Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
 add_custom_target(doc ALL
