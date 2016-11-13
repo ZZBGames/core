@@ -48,8 +48,8 @@ public:
      *
      * @throw std::ios_base::failure if the loading of the image fails.
      */
-    Tileset(const std::string &filename, const util::Dimension &tileSize, const util::Insets &margin,
-            const util::Insets &spacing);
+    Tileset(const std::string& filename, const util::Dimension& tileSize, const util::Insets& margin,
+            const util::Insets& spacing);
 
     ~Tileset();
 

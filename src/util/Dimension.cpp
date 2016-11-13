@@ -27,15 +27,18 @@ namespace util {
 Dimension::Dimension(unsigned long width, unsigned long height)
     : m_height(height),
       m_width(width)
-{}
+{
+}
 
 Dimension::Dimension(const sf::Vector2u& size)
     : m_height(size.y),
       m_width(size.x)
-{}
+{
+}
 
 Dimension::~Dimension()
-{}
+{
+}
 
 unsigned long Dimension::height() const
 {

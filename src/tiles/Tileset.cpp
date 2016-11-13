@@ -26,8 +26,8 @@ namespace zzbgames {
 
 namespace tiles {
 
-Tileset::Tileset(const std::string &filename, const util::Dimension &tileSize, const util::Insets &margin,
-                 const util::Insets &spacing)
+Tileset::Tileset(const std::string& filename, const util::Dimension& tileSize, const util::Insets& margin,
+                 const util::Insets& spacing)
     : m_gridSize(0, 0),
       m_image(),
       m_margin(margin),
@@ -45,7 +45,8 @@ Tileset::Tileset(const std::string &filename, const util::Dimension &tileSize, c
 }
 
 Tileset::~Tileset()
-{}
+{
+}
 
 void Tileset::computeGridSize()
 {
@@ -58,7 +59,8 @@ void Tileset::computeGridSize()
     m_gridSize.height((textureSize.height() - m_margin.top() - m_margin.bottom()) / tileHeight);
 }
 
-unsigned long Tileset::tileCount() const {
+unsigned long Tileset::tileCount() const
+{
     return m_gridSize.height() * m_gridSize.width();
 }
 

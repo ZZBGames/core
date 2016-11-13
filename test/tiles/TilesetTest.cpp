@@ -26,7 +26,8 @@ namespace zzbgames {
 
 namespace tiles {
 
-TEST(TilesetTest, Constructor) {
+TEST(TilesetTest, Constructor)
+{
     util::Dimension tileSize(8, 8);
     util::Insets margin(1, 1, 0, 0);
     util::Insets spacing(0, 0, 1, 1);
