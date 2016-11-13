@@ -26,13 +26,15 @@ namespace zzbgames {
 
 namespace util {
 
-TEST(Dimension, Constructor) {
+TEST(Dimension, Constructor)
+{
     Dimension dimension(1, 2);
     ASSERT_EQ(1, dimension.width());
     ASSERT_EQ(2, dimension.height());
 }
 
-TEST(Dimension, Setter) {
+TEST(Dimension, Setter)
+{
     Dimension dimension(0, 0);
     dimension.width(1).height(2);
 

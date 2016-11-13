@@ -26,7 +26,8 @@ namespace zzbgames {
 
 namespace util {
 
-TEST(Insets, Constructor) {
+TEST(Insets, Constructor)
+{
     Insets insets(1, 2, 3, 4);
     ASSERT_EQ(1, insets.top());
     ASSERT_EQ(2, insets.left());

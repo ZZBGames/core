@@ -29,10 +29,12 @@ Insets::Insets(unsigned long top, unsigned long left, unsigned long bottom, unsi
       m_left(left),
       m_right(right),
       m_top(top)
-{}
+{
+}
 
 Insets::~Insets()
-{}
+{
+}
 
 unsigned long Insets::bottom() const
 {
