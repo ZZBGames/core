@@ -76,7 +76,7 @@ function(test_coverage_genhtml target test-target)
 
     add_custom_target(${target}-genhtml
         COMMAND ${GENHTML_PATH} -o ${GENHTML_OUTPUT_DIR} ${LCOV_OUTPUT_FILE}
-        DEPENDS ${target}-genhtml)
+        DEPENDS ${target})
 
 endfunction()
 
@@ -93,7 +93,7 @@ function(test_coverage_coveralls target test-target)
 
     add_custom_target(${target}-coveralls
         COMMAND ${COVERALLS_LCOV_PATH} --repo-token ${COVERALLS_TOKEN} ${LCOV_OUTPUT_FILE}
-        DEPENDS ${target}-coveralls)
+        DEPENDS ${target})
 
 endfunction()
 
