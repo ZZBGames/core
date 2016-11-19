@@ -39,6 +39,16 @@ namespace tiles {
 class Tileset {
 public:
     /**
+     * @brief Creates a new Tileset object from a file with empty margin and spacing
+     *
+     * @param filename The name of the tileset image file.
+     * @param tileSize The size of each tile in pixels.
+     *
+     * @throw std::ios_base::failure if the loading of the image fails.
+     */
+    Tileset(const std::string& filename, const util::Dimension& tileSize);
+
+    /**
      * @brief Creates a new Tileset object from a file.
      *
      * @param filename The name of the tileset image file.
@@ -54,11 +64,36 @@ public:
     ~Tileset();
 
     /**
+     * @brief Returns the internal SFML::Texture of this Tileset.
+     *
+     * @return The internal SFML::Texture of this Tileset.
+     */
+    const sf::Texture& texture() const;
+
+    /**
+     * @brief Returns a tile from its index in this Tileset as a SFML::IntRect.
+     *
+     * @param index The index of the tile.
+     *
+     * @return the area of the tile in this Tileset.
+     *
+     * @throws an std::out_of_range exception if index is greater than the number of tiles.
+     */
+    sf::IntRect tileAsRect(unsigned long index) const;
+
+    /**
      * @brief Returns the number of tiles of this tileset.
      *
-     * @return The number of tiles of this tileset.
+     * @return the number of tiles of this tileset.
      */
     unsigned long tileCount() const;
+
+    /**
+     * @brief Returns the size of each tile of this Tileset.
+     *
+     * @return the size of each tile of this Tileset.
+     */
+    const util::Dimension& tileSize() const;
 
 private:
     /**
@@ -67,7 +102,7 @@ private:
     void computeGridSize();
 
 private:
-    /// @brief The size of this tileset in squares.
+    /// @brief The size of this Tileset in squares.
     util::Dimension m_gridSize;
 
     /// @brief The image used by this tileset.

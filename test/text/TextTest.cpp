@@ -18,47 +18,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <zzbgames/util/Insets.hpp>
+#include <gtest/gtest.h>
+
+#include <SFML/Graphics/RenderWindow.hpp>
+
+#include <zzbgames/text/Text.hpp>
+#include <zzbgames/util/ImageComparator.hpp>
+
+#include "FontImpl.hpp"
 
 namespace zzbgames {
 
-namespace util {
+namespace text {
 
-Insets::Insets()
-    : Insets(0, 0, 0, 0)
+TEST(TextTest, Draw)
 {
-}
+    tiles::Tileset tileset("res/text/font.png", util::Dimension(8, 8));
+    FontImpl font(tileset);
+    ASSERT_EQ(0, font.characterToTileIndex('a'));
+    ASSERT_EQ(1, font.characterToTileIndex('b'));
+    ASSERT_EQ(2, font.characterToTileIndex('c'));
+    ASSERT_EQ(3, font.characterToTileIndex('d'));
+    ASSERT_THROW(font.characterToTileIndex('e'), std::out_of_range);
 
-Insets::Insets(unsigned long top, unsigned long left, unsigned long bottom, unsigned long right)
-    : m_bottom(bottom),
-      m_left(left),
-      m_right(right),
-      m_top(top)
-{
-}
+    Text text(font, "abcd");
 
-Insets::~Insets()
-{
-}
+    sf::RenderWindow window(sf::VideoMode(32, 8), "TextTest - Draw");
+    window.clear();
+    window.draw(text);
+    const sf::Image& screenshot = window.capture();
 
-unsigned long Insets::bottom() const
-{
-    return m_bottom;
-}
+    sf::Image image;
+    image.loadFromFile("res/text/font.png");
 
-unsigned long Insets::left() const
-{
-    return m_left;
-}
-
-unsigned long Insets::right() const
-{
-    return m_right;
-}
-
-unsigned long Insets::top() const
-{
-    return m_top;
+    ASSERT_EQ(true, util::ImageComparator::areEquals(screenshot, image));
 }
 
 }

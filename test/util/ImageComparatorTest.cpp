@@ -18,47 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <zzbgames/util/Insets.hpp>
+#include <gtest/gtest.h>
+
+#include <zzbgames/util/ImageComparator.hpp>
 
 namespace zzbgames {
 
 namespace util {
 
-Insets::Insets()
-    : Insets(0, 0, 0, 0)
+TEST(ImageComparatorTest, areEquals)
 {
-}
+    sf::Image image1;
+    image1.loadFromFile("res/tiles/tileset.png");
+    ASSERT_EQ(true, ImageComparator::areEquals(image1, image1));
 
-Insets::Insets(unsigned long top, unsigned long left, unsigned long bottom, unsigned long right)
-    : m_bottom(bottom),
-      m_left(left),
-      m_right(right),
-      m_top(top)
-{
-}
-
-Insets::~Insets()
-{
-}
-
-unsigned long Insets::bottom() const
-{
-    return m_bottom;
-}
-
-unsigned long Insets::left() const
-{
-    return m_left;
-}
-
-unsigned long Insets::right() const
-{
-    return m_right;
-}
-
-unsigned long Insets::top() const
-{
-    return m_top;
+    sf::Image image2;
+    image2.create(8, 8, sf::Color(255, 0, 0));
+    ASSERT_EQ(false, ImageComparator::areEquals(image1, image2));
+    ASSERT_EQ(true, ImageComparator::areEquals(image1, sf::IntRect(1, 1, 8, 8), image2, sf::IntRect(0, 0, 8, 8)));
+    ASSERT_EQ(false, ImageComparator::areEquals(image1, sf::IntRect(0, 0, 8, 8), image2, sf::IntRect(0, 0, 8, 8)));
+    ASSERT_EQ(false, ImageComparator::areEquals(image1, sf::IntRect(0, 0, 1, 1), image2, sf::IntRect(0, 0, 8, 8)));
 }
 
 }

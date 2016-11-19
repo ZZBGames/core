@@ -31,6 +31,11 @@ namespace util {
 class Insets {
 public:
     /**
+     * @brief Creates a new Insets object.
+     */
+    Insets();
+
+    /**
      * @brief Creates a new Insets object with the specified top, left, bottom and right insets.
      *
      * @param top The inset from the top.

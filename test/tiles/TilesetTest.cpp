@@ -36,6 +36,35 @@ TEST(TilesetTest, Constructor)
 
     Tileset tileset("res/tiles/tileset.png", tileSize, margin, spacing);
     ASSERT_EQ(4, tileset.tileCount());
+    ASSERT_EQ(8, tileset.tileSize().height());
+    ASSERT_EQ(8, tileset.tileSize().width());
+}
+
+TEST(TilesetTest, Tile)
+{
+    util::Dimension tileSize(8, 8);
+    util::Insets margin(1, 1, 0, 0);
+    util::Insets spacing(0, 0, 1, 1);
+    Tileset tileset("res/tiles/tileset.png", tileSize, margin, spacing);
+
+    for (unsigned long i = 0; i < tileset.tileCount(); ++i)
+        ASSERT_NO_THROW(tileset.tileAsRect(i));
+    ASSERT_THROW(tileset.tileAsRect(4), std::out_of_range);
+
+    const sf::IntRect& tileArea1 = tileset.tileAsRect(0);
+    ASSERT_EQ(1, tileArea1.left);
+    ASSERT_EQ(1, tileArea1.top);
+    ASSERT_EQ(8, tileArea1.width);
+    ASSERT_EQ(8, tileArea1.height);
+
+    ASSERT_EQ(10, tileset.tileAsRect(1).left);
+    ASSERT_EQ(1, tileset.tileAsRect(1).top);
+
+    ASSERT_EQ(1, tileset.tileAsRect(2).left);
+    ASSERT_EQ(10, tileset.tileAsRect(2).top);
+
+    ASSERT_EQ(10, tileset.tileAsRect(3).left);
+    ASSERT_EQ(10, tileset.tileAsRect(3).top);
 }
 
 }

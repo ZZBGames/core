@@ -18,49 +18,52 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <zzbgames/util/Insets.hpp>
+#ifndef ZZB_CORE_FONT_HPP
+#define ZZB_CORE_FONT_HPP
+
+#include <zzbgames/tiles/Tileset.hpp>
 
 namespace zzbgames {
 
-namespace util {
+namespace text {
 
-Insets::Insets()
-    : Insets(0, 0, 0, 0)
-{
-}
+/**
+ * @brief A Font implementation based on a Tileset.
+ */
+class Font {
+public:
+    /**
+     * @brief Creates a new Font object from a Tileset.
+     *
+     * @param tileset The tileset used by this font.
+     */
+    Font(const tiles::Tileset& tileset);
 
-Insets::Insets(unsigned long top, unsigned long left, unsigned long bottom, unsigned long right)
-    : m_bottom(bottom),
-      m_left(left),
-      m_right(right),
-      m_top(top)
-{
-}
+    ~Font();
 
-Insets::~Insets()
-{
-}
+    /**
+     * @brief Returns the tile to use to draw the character.
+     *
+     * @param character The character to draw.
+     *
+     * @return the index of the tile corresponding to the character.
+     */
+    virtual unsigned long characterToTileIndex(char character) const = 0;
 
-unsigned long Insets::bottom() const
-{
-    return m_bottom;
-}
+    /**
+     * @brief Returns the Tileset this Font is based on.
+     *
+     * @return the Tileset this Font is based on.
+     */
+    const tiles::Tileset& tileset() const;
 
-unsigned long Insets::left() const
-{
-    return m_left;
-}
-
-unsigned long Insets::right() const
-{
-    return m_right;
-}
-
-unsigned long Insets::top() const
-{
-    return m_top;
-}
+private:
+    /// @brief A reference to the Tileset object used by this Font.
+    const tiles::Tileset& m_tileset;
+};
 
 }
 
 }
+
+#endif //ZZB_CORE_FONT_HPP

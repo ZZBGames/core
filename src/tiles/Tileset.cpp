@@ -19,12 +19,19 @@
 // SOFTWARE.
 
 #include <ios>
+#include <sstream>
+#include <stdexcept>
 
 #include <zzbgames/tiles/Tileset.hpp>
 
 namespace zzbgames {
 
 namespace tiles {
+
+Tileset::Tileset(const std::string& filename, const util::Dimension& tileSize)
+    : Tileset(filename, tileSize, util::Insets(), util::Insets())
+{
+}
 
 Tileset::Tileset(const std::string& filename, const util::Dimension& tileSize, const util::Insets& margin,
                  const util::Insets& spacing)
@@ -59,9 +66,43 @@ void Tileset::computeGridSize()
     m_gridSize.height((textureSize.height() - m_margin.top() - m_margin.bottom()) / tileHeight);
 }
 
+const sf::Texture& Tileset::texture() const
+{
+    return m_texture;
+}
+
+sf::IntRect Tileset::tileAsRect(unsigned long index) const
+{
+    if (index >= tileCount()) {
+        std::ostringstream oss;
+        oss << "The tile index (" << index << ") is out of range [0, " << tileCount() << "]";
+        throw std::out_of_range(oss.str());
+    }
+
+    sf::IntRect tileArea;
+
+    unsigned long rowIndex = index / m_gridSize.width();
+    unsigned long columnIndex = index % m_gridSize.width();
+
+    unsigned long tileWidth = m_spacing.left() + m_tileSize.width() + m_spacing.right();
+    unsigned long tileHeight = m_spacing.top() + m_tileSize.height() + m_spacing.bottom();
+
+    tileArea.left = static_cast<unsigned int>(m_margin.left() + columnIndex * tileWidth);
+    tileArea.top = static_cast<unsigned int>(m_margin.top() + rowIndex * tileHeight);
+    tileArea.width = static_cast<unsigned int>(m_tileSize.width());
+    tileArea.height = static_cast<unsigned int>(m_tileSize.height());
+
+    return tileArea;
+}
+
 unsigned long Tileset::tileCount() const
 {
     return m_gridSize.height() * m_gridSize.width();
+}
+
+const util::Dimension& Tileset::tileSize() const
+{
+    return m_tileSize;
 }
 
 }

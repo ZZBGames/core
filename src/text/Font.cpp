@@ -18,47 +18,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <zzbgames/util/Insets.hpp>
+#include <zzbgames/text/Font.hpp>
 
 namespace zzbgames {
 
-namespace util {
+namespace text {
 
-Insets::Insets()
-    : Insets(0, 0, 0, 0)
+Font::Font(const tiles::Tileset& tileset)
+    : m_tileset(tileset)
 {
 }
 
-Insets::Insets(unsigned long top, unsigned long left, unsigned long bottom, unsigned long right)
-    : m_bottom(bottom),
-      m_left(left),
-      m_right(right),
-      m_top(top)
+Font::~Font()
 {
 }
 
-Insets::~Insets()
+const tiles::Tileset& Font::tileset() const
 {
-}
-
-unsigned long Insets::bottom() const
-{
-    return m_bottom;
-}
-
-unsigned long Insets::left() const
-{
-    return m_left;
-}
-
-unsigned long Insets::right() const
-{
-    return m_right;
-}
-
-unsigned long Insets::top() const
-{
-    return m_top;
+    return m_tileset;
 }
 
 }

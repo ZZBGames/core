@@ -18,30 +18,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <gtest/gtest.h>
+#ifndef ZZB_CORE_TEXT_HPP
+#define ZZB_CORE_TEXT_HPP
 
-#include <zzbgames/util/Insets.hpp>
+#include <string>
+
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
+
+#include <zzbgames/text/Font.hpp>
 
 namespace zzbgames {
 
-namespace util {
+namespace text {
 
-TEST(Insets, Constructor)
-{
-    Insets insets1;
-    ASSERT_EQ(0, insets1.top());
-    ASSERT_EQ(0, insets1.left());
-    ASSERT_EQ(0, insets1.bottom());
-    ASSERT_EQ(0, insets1.right());
+/**
+ * @brief The Text class represents a
+ */
+class Text : public sf::Drawable, public sf::Transformable {
+public:
+    /**
+     * @brief Creates a new Text object.
+     *
+     * @param font The font used to draw the text.
+     * @param text The text to draw.
+     */
+    Text(const Font& font, const std::string& text);
 
-    Insets insets2(1, 2, 3, 4);
-    ASSERT_EQ(1, insets2.top());
-    ASSERT_EQ(2, insets2.left());
-    ASSERT_EQ(3, insets2.bottom());
-    ASSERT_EQ(4, insets2.right());
+    ~Text();
+
+    /**
+     * @brief Draws this Text object to the render target.
+     *
+     * @param target The target to draw to.
+     * @param states The current rendering states.
+     */
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+private:
+    /// @brief The font used to draw the text.
+    const Font& m_font;
+
+    /// @brief The vertex array to draw the text.
+    sf::VertexArray m_vertices;
+};
+
 }
 
-
 }
 
-}
+#endif //ZZB_CORE_TEXT_HPP
