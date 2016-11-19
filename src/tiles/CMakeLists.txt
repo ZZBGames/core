@@ -21,8 +21,7 @@
 set(MODULE_NAME zzb-tiles)
 
 set(MODULE_SOURCES
-    Tileset.cpp
-)
+    Tileset.cpp)
 
 if (BUILD_SHARED_LIBS)
     add_library(${MODULE_NAME} SHARED ${MODULE_SOURCES})
@@ -32,7 +31,7 @@ if (BUILD_SHARED_LIBS)
     target_link_libraries(${MODULE_NAME} ${SFML_LIBRARIES} zzb-util)
 
     install(TARGETS ${MODULE_NAME} LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT library)
-endif()
+endif ()
 
 if (BUILD_STATIC_LIBS)
     add_library(${MODULE_NAME}-static STATIC ${MODULE_SOURCES})
@@ -41,4 +40,4 @@ if (BUILD_STATIC_LIBS)
     target_link_libraries(${MODULE_NAME}-static ${SFML_LIBRARIES} zzb-util)
 
     install(TARGETS ${MODULE_NAME}-static ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT library)
-endif()
+endif ()
