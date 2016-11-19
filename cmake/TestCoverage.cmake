@@ -20,7 +20,7 @@
 
 if (NOT (CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "TestCoverage"))
     message(WARNING "Code coverage results with an optimized build may be misleading")
-endif()
+endif ()
 
 # Set-up test coverage compilation flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage -fprofile-arcs -ftest-coverage")
@@ -29,24 +29,30 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 --coverage -fprofile-arcs -ftest-cove
 # Test coverage options
 set(LCOV_EXCLUDE_PATTERNS "" CACHE STRING "lcov exclude patterns.")
 set(LCOV_OUTPUT_FILE "coverage.info" CACHE STRING "lcov output file.")
+
+# GenHTML options
+set(WITH_GENHTML true CACHE BOOLEAN "Enable genhtml report generation.")
 set(GENHTML_OUTPUT_DIR "coverage" CACHE STRING "genhtml output directory.")
+
+# Coveralls option
+set(WITH_COVERALLS true CACHE BOOLEAN "Enable coveralls report generation.")
 set(COVERALLS_TOKEN "" CACHE STRING "Coveralls token")
 
-function(test_coverage target test-target)
+function(test_coverage_report target test-target)
 
     find_program(GCOV_PATH gcov)
     if (NOT GCOV_PATH)
         message(FATAL_ERROR "gcov not found")
-    endif()
+    endif ()
 
     find_program(LCOV_PATH lcov)
     if (NOT LCOV_PATH)
         message(FATAL_ERROR "lcov not found")
-    endif()
+    endif ()
 
     # Add a clean-up target dependency to the test target
     add_custom_target(pre-${target}
-        ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --zerocounters)
+        COMMAND ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --zerocounters)
     add_dependencies(${test-target} pre-${target})
 
     # Report generation
@@ -62,13 +68,15 @@ function(test_coverage_genhtml target test-target)
     find_program(GENHTML_PATH genhtml)
     if (NOT GENHTML_PATH)
         message(FATAL_ERROR "genhtml not found")
-    endif()
+    endif ()
 
-    test_coverage(${target}-genhtml ${test-target})
+    if (NOT TARGET ${target})
+        test_coverage_report(${target} ${test-target})
+    endif ()
 
-    add_custom_target(${target}
-        ${GENHTML_PATH} -o ${GENHTML_OUTPUT_DIR} ${LCOV_OUTPUT_FILE}
-        DEPENDS ${target}-genhtml)
+    add_custom_target(${target}-genhtml
+        COMMAND ${GENHTML_PATH} -o ${GENHTML_OUTPUT_DIR} ${LCOV_OUTPUT_FILE}
+        DEPENDS ${target})
 
 endfunction()
 
@@ -77,13 +85,26 @@ function(test_coverage_coveralls target test-target)
     find_program(COVERALLS_LCOV_PATH coveralls-lcov)
     if (NOT COVERALLS_LCOV_PATH)
         message(FATAL_ERROR "coveralls-lcov not found")
-    endif()
+    endif ()
 
-    test_coverage(${target}-coveralls ${test-target})
+    if (NOT TARGET ${target})
+        test_coverage_report(${target} ${test-target})
+    endif ()
 
-    add_custom_target(${target}
-        ${COVERALLS_LCOV_PATH} --repo-token ${COVERALLS_TOKEN} ${LCOV_OUTPUT_FILE}
-        DEPENDS ${target}-coveralls)
+    add_custom_target(${target}-coveralls
+        COMMAND ${COVERALLS_LCOV_PATH} --repo-token ${COVERALLS_TOKEN} ${LCOV_OUTPUT_FILE}
+        DEPENDS ${target})
 
 endfunction()
 
+function(test_coverage target test-target)
+
+    if (WITH_GENHTML)
+        test_coverage_genhtml(${target} ${test-target})
+    endif ()
+
+    if (WITH_COVERALLS)
+        test_coverage_coveralls(${target} ${test-target})
+    endif ()
+
+endfunction()

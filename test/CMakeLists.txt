@@ -26,13 +26,12 @@ set(MODULE_SOURCES
     util/InsetsTest.cpp
     text/FontImpl.cpp
     text/TextTest.cpp
-    tiles/TilesetTest.cpp
-)
+    tiles/TilesetTest.cpp)
 
 find_package(GTest REQUIRED)
 if (NOT GTEST_FOUND)
     message(FATAL_ERROR "Google Test is needed to build the tests.")
-endif()
+endif ()
 
 include_directories(${GTEST_INCLUDE_DIRS})
 
