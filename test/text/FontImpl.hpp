@@ -18,49 +18,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <zzbgames/util/Insets.hpp>
+#ifndef ZZB_CORE_FONTIMPL_HPP
+#define ZZB_CORE_FONTIMPL_HPP
+
+#include <zzbgames/text/Font.hpp>
 
 namespace zzbgames {
 
-namespace util {
+namespace text {
 
-Insets::Insets()
-    : Insets(0, 0, 0, 0)
-{
-}
+class FontImpl : public Font {
+public:
+    FontImpl(const tiles::Tileset& tileset);
 
-Insets::Insets(unsigned long top, unsigned long left, unsigned long bottom, unsigned long right)
-    : m_bottom(bottom),
-      m_left(left),
-      m_right(right),
-      m_top(top)
-{
-}
-
-Insets::~Insets()
-{
-}
-
-unsigned long Insets::bottom() const
-{
-    return m_bottom;
-}
-
-unsigned long Insets::left() const
-{
-    return m_left;
-}
-
-unsigned long Insets::right() const
-{
-    return m_right;
-}
-
-unsigned long Insets::top() const
-{
-    return m_top;
-}
+    virtual unsigned long characterToTileIndex(char character) const override;
+};
 
 }
 
 }
+
+#endif //ZZB_CORE_FONTIMPL_HPP

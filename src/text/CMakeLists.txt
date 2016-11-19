@@ -18,8 +18,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_subdirectory(util)
-add_subdirectory(text)
-add_subdirectory(tiles)
+set(MODULE_NAME zzb-text)
 
-install(DIRECTORY ../include/zzbgames DESTINATION ${INCLUDE_INSTALL_DIR})
+set(MODULE_SOURCES
+    Font.cpp
+    Text.cpp
+)
+
+if (BUILD_SHARED_LIBS)
+    add_library(${MODULE_NAME} SHARED ${MODULE_SOURCES})
+    set_target_properties(${MODULE_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+    set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
+
+    target_link_libraries(${MODULE_NAME} ${SFML_LIBRARIES} zzb-util zzb-tiles)
+
+    install(TARGETS ${MODULE_NAME} LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT library)
+endif()
+
+if (BUILD_STATIC_LIBS)
+    add_library(${MODULE_NAME}-static STATIC ${MODULE_SOURCES})
+    set_target_properties(${MODULE_NAME}-static PROPERTIES OUTPUT_NAME ${MODULE_NAME})
+
+    target_link_libraries(${MODULE_NAME}-static ${SFML_LIBRARIES} zzb-util zzb-tiles)
+
+    install(TARGETS ${MODULE_NAME}-static ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT library)
+endif()

@@ -18,47 +18,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <zzbgames/util/Insets.hpp>
+#include <stdexcept>
+
+#include "FontImpl.hpp"
 
 namespace zzbgames {
 
-namespace util {
+namespace text {
 
-Insets::Insets()
-    : Insets(0, 0, 0, 0)
+FontImpl::FontImpl(const tiles::Tileset& tileset)
+    : Font(tileset)
 {
 }
 
-Insets::Insets(unsigned long top, unsigned long left, unsigned long bottom, unsigned long right)
-    : m_bottom(bottom),
-      m_left(left),
-      m_right(right),
-      m_top(top)
+unsigned long FontImpl::characterToTileIndex(char character) const
 {
-}
+    unsigned long tileIndex = 0;
 
-Insets::~Insets()
-{
-}
+    if ((character >= 'a') && (character <= 'd'))
+        tileIndex = static_cast<unsigned long>(character - 'a');
+    else if ((character >= 'A') && (character <= 'D'))
+        tileIndex = static_cast<unsigned long>(character - 'A');
+    else
+        throw std::out_of_range("OutOfRange[a, d]");
 
-unsigned long Insets::bottom() const
-{
-    return m_bottom;
-}
-
-unsigned long Insets::left() const
-{
-    return m_left;
-}
-
-unsigned long Insets::right() const
-{
-    return m_right;
-}
-
-unsigned long Insets::top() const
-{
-    return m_top;
+    return tileIndex;
 }
 
 }
