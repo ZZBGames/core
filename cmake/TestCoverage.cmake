@@ -29,10 +29,12 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 --coverage -fprofile-arcs -ftest-cove
 # Test coverage options
 set(LCOV_EXCLUDE_PATTERNS "" CACHE STRING "lcov exclude patterns.")
 set(LCOV_OUTPUT_FILE "coverage.info" CACHE STRING "lcov output file.")
+set(LCOV_OPTIONS "" CACHE STRING "lcov additionnal options.")
 
 # GenHTML options
 set(WITH_GENHTML true CACHE BOOLEAN "Enable genhtml report generation.")
 set(GENHTML_OUTPUT_DIR "coverage" CACHE STRING "genhtml output directory.")
+set(GENHTML_OPTIONS "" CACHE STRING "genhtml additionnal options.")
 
 # Coveralls option
 set(WITH_COVERALLS true CACHE BOOLEAN "Enable coveralls report generation.")
@@ -52,13 +54,13 @@ function(test_coverage_report target test-target)
 
     # Add a clean-up target dependency to the test target
     add_custom_target(pre-${target}
-        COMMAND ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --zerocounters)
+        COMMAND ${LCOV_PATH} -d ${CMAKE_BINARY_DIR} -z ${LCOV_OPTIONS})
     add_dependencies(${test-target} pre-${target})
 
     # Report generation
     add_custom_target(${target}
-        COMMAND ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --capture --output-file ${LCOV_OUTPUT_FILE}
-        COMMAND ${LCOV_PATH} --remove ${LCOV_OUTPUT_FILE} ${LCOV_EXCLUDE_PATTERNS} --output-file ${LCOV_OUTPUT_FILE}
+        COMMAND ${LCOV_PATH} -d ${CMAKE_BINARY_DIR} -c -o ${LCOV_OUTPUT_FILE} ${LCOV_OPTIONS}
+        COMMAND ${LCOV_PATH} -r ${LCOV_OUTPUT_FILE} ${LCOV_EXCLUDE_PATTERNS} -o ${LCOV_OUTPUT_FILE} ${LCOV_OPTIONS}
         DEPENDS ${test-target})
 
 endfunction()
@@ -75,7 +77,7 @@ function(test_coverage_genhtml target test-target)
     endif ()
 
     add_custom_target(${target}-genhtml
-        COMMAND ${GENHTML_PATH} -o ${GENHTML_OUTPUT_DIR} ${LCOV_OUTPUT_FILE}
+        COMMAND ${GENHTML_PATH} -o ${GENHTML_OUTPUT_DIR} ${LCOV_OUTPUT_FILE} ${GENHTML_OPTIONS}
         DEPENDS ${target})
 
 endfunction()
