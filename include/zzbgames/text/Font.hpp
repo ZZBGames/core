@@ -28,7 +28,7 @@ namespace zzbgames {
 namespace text {
 
 /**
- * @brief A Font implementation based on a Tileset.
+ * @brief The Font class is the base class for fonts based on a tiles::Tileset.
  */
 class Font {
 public:
