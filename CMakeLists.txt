@@ -41,9 +41,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "TestCoverage")
-    include(TestCoverage)
-    set(BUILD_TESTS true)
-    set(LCOV_EXCLUDE_PATTERNS "'/usr/*';'test/*'")
+    include(TestCoverage.custom)
 endif ()
 
 set(BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "The directory the executables are installed in.")
