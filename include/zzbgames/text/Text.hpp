@@ -36,7 +36,7 @@ namespace zzbgames {
 namespace text {
 
 /**
- * @brief The Text class represents a
+ * @brief The Text class represents a drawable text based on a tile Font.
  */
 class Text : public sf::Drawable, public sf::Transformable {
 public:
