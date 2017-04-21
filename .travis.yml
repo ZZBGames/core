@@ -46,3 +46,4 @@ script:
 - cd ${TRAVIS_BUILD_DIR}
 - cmake -DCMAKE_BUILD_TYPE=TestCoverage -DCOVERALLS_TOKEN=${COVERALLS_TOKEN} -DBUILD_DOC=OFF .
 - make test-coverage-coveralls
+
